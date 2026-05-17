@@ -14,8 +14,7 @@ classifiers = [
     "Programming Language :: Python :: 3",
 ]
 
-dependencies
-[
+dependencies = [
     "akshare>=1.18.60",
     "matplotlib>=3.10.9",
     "numpy>=2.4.5",
