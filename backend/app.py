@@ -1,0 +1,34 @@
+from ast import main
+import os
+import sys
+from src.create_app import create_app
+
+
+os.environ.setdefault('FLASK_ENV', 'development')
+
+# 创建应用
+app = create_app()
+
+if __name__ == "__main__":
+    # 获取配置
+    port = int(os.environ.get('PORT', 5000))
+    host = os.environ.get('HOST', '0.0.0.0')
+    debug = os.environ.get('FLASK_ENV') == 'development'
+
+    print("=" * 50)
+    print("DeltaFStation 量化交易系统")
+    print("=" * 50)
+    print(f"启动地址: http://{host}:{port}")
+    print(f"调试模式: {'开启' if debug else '关闭'}")
+
+    # 开发环境默认关闭自动重载，避免保存 data/strategies 等文件时重启进程、打断 AI 流式与日志 SSE。
+    # 改 backend 代码需手动重启；需要热重载时：FLASK_USE_RELOADER=1 python run.py
+    use_reloader: bool = debug and os.environ.get("FLASK_USE_RELOADER", "1").strip().lower() not in (
+        "0",
+        "false",
+        "no",
+    )
+    print(f"自动重载: {'开启' if use_reloader else '关闭'}")
+    print("=" * 50)
+
+    app.run(host=host, port=port, debug=debug, use_reloader=use_reloader)
